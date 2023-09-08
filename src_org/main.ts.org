@@ -1,0 +1,242 @@
+import "./gantt.css";
+import CubicGantt from "./gantt.ts";
+
+function byId(id) {
+  return document.getElementById(id);
+}
+
+function generateData(count, from, to) {
+  let tasks = {
+    data: [],
+  };
+
+  let project_id = 1;
+
+  from = new Date(from);
+  to = new Date(to);
+
+  let arr_prj_length = [20, 30, 10, 40]; //	합쳐서 100 이 되어야함
+
+  for (let prj_index = 0; prj_index < arr_prj_length.length; prj_index++) {
+    let cnt = Math.floor((count * arr_prj_length[prj_index]) / 100);
+
+    for (let n = 0; n < cnt; n++) {
+      let d_from = new Date(from);
+      let d_to = new Date(to);
+
+      let rs = Math.floor(Math.random() * (100 - 0) + 0) + 1;
+      let rd = Math.floor(Math.random() * (10 - 3) + 3);
+      let rp = Math.floor(Math.random() * (100 - 0) + 0);
+      //let r = Math.random() * (max - min) + min;
+
+      d_from.setTime(from.getTime() + rs * 86400000);
+      d_to.setTime(from.getTime() + (rs + rd - 1) * 86400000);
+
+      let task = {
+        n_id: n + prj_index * 10000,
+        start_date: d_from,
+        end_date: d_to,
+        text: "[" + prj_index + "] Task " + (n + 1),
+        parent: 0,
+        level: 0,
+        d_start:
+          d_from.getFullYear() +
+          "-" +
+          (d_from.getMonth() + 1 + "").padStart(2, "0") +
+          "-" +
+          (d_from.getDate() + "").padStart(2, "0"),
+        d_end:
+          d_to.getFullYear() +
+          "-" +
+          (d_to.getMonth() + 1 + "").padStart(2, "0") +
+          "-" +
+          (d_to.getDate() + "").padStart(2, "0"),
+        test: "TTT",
+        progress: rp,
+      };
+
+      tasks.data.push(task);
+    }
+  }
+  return tasks;
+}
+
+function generateData2(count, from, to) {
+  let tasks = {
+    data: [],
+  };
+
+  let project_id = 1;
+
+  from = new Date(from);
+  to = new Date(to);
+
+  let arr_prj_length = [20, 30, 10, 40]; //	합쳐서 100 이 되어야함
+
+  for (let prj_index = 0; prj_index < arr_prj_length.length; prj_index++) {
+    tasks.data.push({
+      n_id: "P." + prj_index,
+      text: "Project " + prj_index,
+      parent: 0,
+      level: 0,
+      font_color: "#fff",
+      bar_color: "#65c16f",
+      progress_color: "#3c9445",
+      use_add: true,
+      //type: gantt.config.types.project,
+      open: true,
+    });
+  }
+  tasks.data.push({
+    n_id: "P." + arr_prj_length.length,
+    text: "Project " + arr_prj_length.length,
+    start_date: new Date(from),
+    end_date: new Date(to),
+    font_color: "red",
+    bar_color: "red",
+    progress_color: "red",
+    use_add: true,
+    parent: 0,
+    level: 0,
+    //type: gantt.config.types.project,
+    open: true,
+  });
+
+  for (let prj_index = 0; prj_index < arr_prj_length.length; prj_index++) {
+    let cnt = Math.floor((count * arr_prj_length[prj_index]) / 100);
+
+    for (let n = 0; n < cnt; n++) {
+      let d_from = new Date(from);
+      let d_to = new Date(to);
+
+      let rs = Math.floor(Math.random() * (100 - 0) + 0) + 1;
+      let rd = Math.floor(Math.random() * (10 - 3) + 3);
+      let rp = Math.floor(Math.random() * (100 - 0) + 0);
+      //let r = Math.random() * (max - min) + min;
+
+      d_from.setTime(from.getTime() + rs * 86400000);
+      d_to.setTime(from.getTime() + (rs + rd - 1) * 86400000);
+
+      let task = {
+        n_id: n + prj_index * 10000,
+        start_date: d_from,
+        end_date: d_to,
+        text: "[" + prj_index + "] Task " + (n + 1),
+        use_add: false,
+        use_drag: true,
+        use_resize: true,
+        parent: "P." + prj_index,
+        level: 1,
+        d_start:
+          d_from.getFullYear() +
+          "-" +
+          (d_from.getMonth() + 1 + "").padStart(2, "0") +
+          "-" +
+          (d_from.getDate() + "").padStart(2, "0"),
+        d_end:
+          d_to.getFullYear() +
+          "-" +
+          (d_to.getMonth() + 1 + "").padStart(2, "0") +
+          "-" +
+          (d_to.getDate() + "").padStart(2, "0"),
+        test: "TTT",
+        progress: rp,
+      };
+
+      tasks.data.push(task);
+    }
+  }
+  return tasks;
+}
+
+//let gantt = new CubicGantt();
+
+document.addEventListener("DOMContentLoaded", function () {
+  let event = new Event("click");
+
+  byId("bt_search").addEventListener("click", function () {
+    let from = new Date(byId("sToday").value).toISOString();
+    let to = new Date(byId("sEnd").value).toISOString();
+    let count = parseInt(byId("sCount").value, 10);
+
+    let gantt = new CubicGantt();
+
+    gantt.tasks = {};
+    gantt.tasks = generateData2(count, from, to);
+
+    from = new Date(from);
+    to = new Date(to);
+    gantt.config.start_date = from;
+    gantt.config.end_date = to;
+
+    //gantt.config.check_weekend = false;
+    //gantt.config.use_add = false;
+    gantt.config.left_type = [
+      { title: "Name", width: "150", align: "left", content: "text" },
+      { title: "Start", width: "90", align: "right", content: "d_start" },
+      { title: "End", width: "90", align: "right", content: "d_end" },
+      { title: "Test", width: "80", align: "right", content: "test" },
+    ];
+
+    function add_test_main() {
+      let obj = {
+        n_id: "P." + 999,
+        text: "Project " + 999,
+        font_color: "red",
+        bar_color: "red",
+        progress_color: "red",
+        use_add: true,
+        parent: 0,
+        level: 0,
+        open: true,
+      };
+      return obj;
+    }
+
+    function add_test_sub(el) {
+      let d_start = new Date(el.start_date);
+      let d_end = new Date(el.end_date);
+      let obj = {
+        n_id: "add test",
+        start_date: d_start,
+        end_date: d_end,
+        text: "[TEST]",
+        parent: el.n_id,
+        level: el.level + 1,
+        d_start:
+          d_start.getFullYear() +
+          "-" +
+          (d_start.getMonth() + 1 + "").padStart(2, "0") +
+          "-" +
+          (d_start.getDate() + "").padStart(2, "0"),
+        d_end:
+          d_end.getFullYear() +
+          "-" +
+          (d_end.getMonth() + 1 + "").padStart(2, "0") +
+          "-" +
+          (d_end.getDate() + "").padStart(2, "0"),
+        test: "EEE",
+        progress: el.progress,
+      };
+      return obj;
+    }
+
+    function load_test(el) {
+      console.log(el);
+    }
+
+    gantt.config.fn_add_main = add_test_main;
+    gantt.config.fn_add_sub = add_test_sub;
+    gantt.config.fn_load_info = load_test;
+
+    gantt.init_gantt("gantt_here");
+  });
+
+  byId("bt_search").dispatchEvent(event);
+
+  document
+    .getElementById("gantt_here")
+    .addEventListener("gantt_change", function (json) {
+      console.log(json.detail.task);
+    });
+});

@@ -1,0 +1,20 @@
+{
+  "name": "gantt.js.vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 3000",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "fmt": "prettier --write src/**/*.ts",
+    "fmtindex": "prettier --write index.html",
+    "fmtcss": "prettier --write src/**/*.css"
+
+  },
+  "devDependencies": {
+    "prettier": "3.0.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}

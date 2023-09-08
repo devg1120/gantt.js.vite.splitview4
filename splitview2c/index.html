@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <script type="module" src="/main.js"></script>
+
+  <div id="main" class="split-view horizontal">
+    <div class="split-view vertical" style="width: 25%; flex: none">
+      <div style="padding: 0 0.75em;">
+        <h1>Split View</h1>
+        <p>
+          Completely Element-Based Split View Controller.
+        </p>
+        <p>
+          Respect Element data (e.g. attribute, style) and structure.
+        </p>
+        <h2>Let's drag the handle!</h2>
+      </div>
+      <div class="gutter"></div>
+      <div style="padding: 0 0.75em;">
+        <h2>No Layout Changes on page loaded</h2>
+        <p>
+          Before the script is loaded, the layout is determined, and the script set the style based on current layout. The layout is never changed.
+        </p>
+      </div>
+    </div>
+    <div class="gutter"></div>
+    <div class="split-view vertical">
+      <div style="height: 55%; flex: none; padding: 0 0.75em;">
+        <h2>Quick Start</h2>
+        <h3>1. Prepare base css</h3>
+        <pre>
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  flex: none;
+}
+
+.split-view {
+  display: flex;
+}
+
+.split-view.vertical {
+  flex-direction: column;
+}
+
+.split-view.horizontal {
+  flex-direction: row;
+}
+
+.split-view&gt;*:not(.gutter){
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.split-view&gt;.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.split-view.horizontal&gt;.gutter {
+  background-image: url(&#39;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==&#39;);
+  cursor: col-resize;
+  width: 10px;
+}
+
+.split-view.vertical&gt;.gutter {
+  background-image: url(&#39;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=&#39;);
+  cursor: row-resize;
+  height: 10px;
+}</pre>
+
+        <h3>2. Make the layout</h3>
+        <pre>
+&lt;div id=&quot;main&quot; class=&quot;split-view horizontal&quot;&gt;
+  &lt;div&gt;
+    &lt;h1&gt;Hello&lt;/h1&gt; 
+  &lt;/div&gt;
+  &lt;div class=&quot;gutter&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;split-view vertical&quot;&gt;
+    &lt;div&gt;
+      &lt;h1&gt;World&lt;/h1&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;gutter&quot;&gt;&lt;/div&gt;
+    &lt;div&gt;
+      &lt;h1&gt;&#127881;&lt;/h1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+
+        <h3>3. Activate</h3>
+        <pre>
+&lt;script src=&quot;SplitView.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  SplitView.activate(document.getElementById(&quot;main&quot;))
+&lt;/script&gt;</pre>
+      </div>
+      <div class="gutter"></div>
+      <div class="split-view horizontal">
+        <div style="padding: 0 0.75em;">
+          <h2>Hackable</h2>
+          <p>
+            The script have no any states (e.g. split direction, split size) and gets them only when a handle is grabbed. Before handle start to be dragged, anyone can edit the elements freely.
+          </p>
+          <button id="layoutChangeButton">Force to change layout</button>
+        </div>
+        <div class="gutter"></div>
+        <div class="split-view vertical">
+          <div id="hack-me-a" style="padding: 0 0.75em;">
+            <h2>Customaizable</h2>
+            <p>
+              The script never style the elements and never add or remove the elements. You can design your own elements as you want.
+            </p>
+          </div>
+          <div class="gutter custom"></div>
+          <div id="hack-me-b">
+            <div style="font-size: xxx-large; text-align: center;">⛩️</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
