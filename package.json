@@ -17,8 +17,5 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "jodit": "^4.0.0-beta.61",
-    "pell": "^1.0.6",
-    "quill": "^1.3.7"
   }
 }
