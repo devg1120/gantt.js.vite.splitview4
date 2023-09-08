@@ -2,6 +2,8 @@ import "./gantt.css";
 import CubicGantt from "./gantt.ts";
 import SplitView from "./SplitViewClass.js";
 import "./SplitView.css";
+import Jodit from "jodit";
+import Quill from "quill";
 
 function byId(id) {
   return document.getElementById(id);
@@ -784,4 +786,10 @@ document.addEventListener("DOMContentLoaded", function () {
   //  .scrollTo({top: 0, behavior: 'smooth'});
 
   //ace.edit("editor");
+
+/*
+  var quill = new Quill('#qeditor', {
+    theme: 'snow'
+  });
+*/
 });

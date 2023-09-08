@@ -1,3 +1,10 @@
+
+//import {Jodit} from "jodit";
+// import Quill from "quill";
+//import "quill/dist/quill.snow.css"
+//import  pell  from 'pell'
+
+
 export default class CubicGantt {
   /*
    *		tasks.data -> 상위노드 parent 값은 무조건 0
@@ -1699,13 +1706,14 @@ document.onkeydown = function(e) {
       cell.addEventListener("click", function () {
         let code = that.dump();
         if (that.gantt_code_editor == null) {
+		 console.log("ace edit");
           let obj_ = document.getElementById("gantt_face");
           let main_content = document.createElement("div");
-          main_content.id = "editor";
+          main_content.id = "codeeditor";
           main_content.style.height = "300px";
           obj_.appendChild(main_content);
           let session = ace.createEditSession(code);
-          that.gantt_code_editor = ace.edit("editor");
+          that.gantt_code_editor = ace.edit("codeeditor");
           that.gantt_code_editor.setSession(session);
         } else {
           that.gantt_code_editor.container.remove();
@@ -2685,17 +2693,28 @@ document.onkeydown = function(e) {
         //ele3.style.width = "0px";
       }
       //right_content_vscroll.appendChild(this.draw_right_list(temp_idx)); // right panel
+      //
+       function adds( a, b ) {
+	    console.log("a:",a);
+	    console.log("b:",b);
+            let n_a = parseInt(a.replace('px',''),10);
+            let n_b = parseInt(b.replace('px',''),10);
+            let ss = n_a + n_b;
+	    let r = ss.toString() + 'px';
+	    console.log(r);
+	    return r;
+       }
+
        let r_array = this.draw_right_list(temp_idx); // right panel
       right_content_vscroll.appendChild(r_array[0]); // right panel
       if (r_array[1] != null) {
-           //console.log("r_row top:",r_array[0].style.top)
-           //console.log("r_row left:",r_array[0].style.left)
-           //console.log(r_array[0].getBoundingClientRect());
-           console.log("row  top:",r_array[0].style.top)
-           console.log("row  left:",r_array[0].style.left)
-           //console.log(r_array[1].getBoundingClientRect());
-	    r_array[1].top  = r_array[0].top;
-	    r_array[1].left  = r_array[0].left;
+
+	    //r_array[1].style.top  = r_array[0].style.top;
+	    //r_array[1].style.left  = r_array[0].style.left;
+
+             r_array[1].style.top  = adds(r_array[1].style.top, r_array[0].style.top);
+             r_array[1].style.left  = adds(r_array[1].style.left, r_array[0].style.left);
+
          right_content_vscroll.appendChild(r_array[1]); // right panel
 
       }
@@ -3508,6 +3527,9 @@ gantt_row.animate(
       //content = document.createElement("input");
       
       memo_div = document.createElement("div");
+      memo_div.id = "memo_div";
+      memo_div.style.position = "absolute";
+      memo_div.style.zIndex = "1000";
 /*
       function callback(event) {
         event.stopPropagation();
@@ -3529,19 +3551,26 @@ gantt_row.animate(
         this.tasks.data[this.visible_order[index].index].text;
 
       let content_memo = document.createElement("textarea");
+      content_memo.id = "memoeditor";
+
+//      let content_memo = document.createElement("div");
+//
+//pell.init({
+//  element: content_memo,
+//  });
 
       content_div.appendChild(center);
       content_div.appendChild(content_memo);
 
-
-      //content.classList.add("gantt_task_memo");
       content_div.classList.add("gantt_task_memo");
       content_div.style.color = "#000000";
       content_div.style.zIndex = 3000;
-      content_div.style.top = memo.top;
-      content_div.style.left = memo.left;
-      console.log(content_div.style.top);
-      console.log(content_div.style.left);
+      console.log(memo);
+      memo_div.style.top = memo["top"];
+      memo_div.style.left = memo["left"];
+      //content_div.style.position = "relative";
+      //console.log("content_div top",content_div.style.top);
+      //console.log("content_div left",content_div.style.left);
 
       //content_div.style.width = memo.width;
       //content_div.style.height = memo.height;
@@ -3560,7 +3589,8 @@ gantt_row.animate(
 
       content_memo.addEventListener("resize", (event) => {});
 
-      dragElement(content_div);
+      //dragElement(content_div);
+      dragElement(memo_div);
       let that = this;
 
       function dragElement(elmnt) {
@@ -3692,6 +3722,7 @@ line.setAttribute('transform', "rotate(0)");
 
     //return gantt_row;
     return [gantt_row, memo_div];
+    //return [gantt_row, content_div];
   }
   event_wheel(event) {
     if (event.deltaY < 0) {

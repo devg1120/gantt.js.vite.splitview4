@@ -10,11 +10,15 @@
     "fmt": "prettier --write src/**/*.ts",
     "fmtindex": "prettier --write index.html",
     "fmtcss": "prettier --write src/**/*.css"
-
   },
   "devDependencies": {
     "prettier": "3.0.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "jodit": "^4.0.0-beta.61",
+    "pell": "^1.0.6",
+    "quill": "^1.3.7"
   }
 }
